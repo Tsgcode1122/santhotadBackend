@@ -11,12 +11,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    referralLink: {
-      type: String,
-
-      unique: true,
-    },
-
     phoneNumber: {
       type: Number,
     },
@@ -28,22 +22,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    country: {
-      type: String,
-    },
-    state: {
-      type: String,
-    },
-    streetAddress: {
-      type: String,
-    },
-    accountNumber: {
-      type: String,
-    },
-    bank: {
-      type: String,
-    },
-    accountName: {
+    image: {
       type: String,
     },
   },

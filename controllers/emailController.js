@@ -27,7 +27,7 @@ exports.formSubmission = async (req, res) => {
     // Send email with inquiry details to falolatosin
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: "falolatosin8@gmail.com",
+      to: process.env.EMAIL_RECEIVE,
       subject: "New Inquiry Received",
       text: `
         Hello, you just received an inquiry form from ${name}.
@@ -131,27 +131,19 @@ exports.verifyCode = async (req, res) => {
 };
 
 exports.Subscribe = async (req, res) => {
-  const { email, notify } = req.body;
-  const adminEmail = "cashflowcapital.info@gmail.com";
+  const { email } = req.body;
 
   try {
-    if (!email || !notify) {
-      return res.status(400).json({
-        success: false,
-        message: "Email and notification preference are required",
-      });
-    }
-
     // Send the subscription details to the admin email
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: adminEmail,
+      to: process.env.EMAIL_RECEIVE,
       subject: "New Subscription Request",
-      text: `Dear Admin, you have a new subscriber: ${email},and also wants to receive notifications on news and update: ${notify}`,
+      text: `Dear Admin, you have a new subscriber: ${email}`,
       html: `
         <p>Dear Admin,</p>
         <p>You have a new subscriber: <strong>${email}</strong></p>
-        <p>They wish to receive notifications on news and update: <strong>${notify}</strong></p>
+        
       `,
     });
 
