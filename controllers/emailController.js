@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport({
 // Generate random verification code
 const generateVerificationCode = () => {
   // Generate a random alphanumeric code
-  const code = Math.floor(1000 + Math.random() * 9000);
-  return code.toString();
+  const code = Math.floor(1000 + Math.random() * 9000).toString();
+  return code;
 };
 
 // Handle form submissions

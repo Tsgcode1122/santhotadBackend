@@ -16,6 +16,8 @@ app.use(express.json());
 const authRoutes = require("./routes/auth");
 const emailRoutes = require("./routes/emailRoutes");
 const resetRoutes = require("./routes/resetRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
+const blogRoutes = require("./routes/blogRoutes");
 
 // app use
 app.get("/", (req, res) => res.send("hello santhatod"));
@@ -23,6 +25,8 @@ app.get("/", (req, res) => res.send("hello santhatod"));
 app.use("/api/auth", authRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/reset", resetRoutes);
+app.use("/api/signature", uploadRoutes);
+app.use("/api/blogs", blogRoutes);
 
 // Start server
 app.listen(PORT, () => {
