@@ -11,11 +11,13 @@ exports.register = async (req, res) => {
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    // Convert email to lowercase
+    const lowerCaseEmail = email.toLowerCase();
 
     // Create a new user
     const newUser = new User({
       fullName,
-      email,
+      email: lowerCaseEmail,
       phoneNumber,
       password: hashedPassword,
     });
@@ -34,13 +36,13 @@ exports.checkEmailExists = async (req, res) => {
   const { email } = req.body;
 
   try {
+    const lowerCaseEmail = email.toLowerCase();
     // Check if the email exists in the database
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: lowerCaseEmail });
     const exists = !!user;
 
     res.status(200).json({ exists });
   } catch (error) {
-    console.error("Error checking email existence:", error);
     res.status(500).json({ error: "Failed to check email existence" });
   }
 };
@@ -49,9 +51,9 @@ exports.checkEmailExists = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    const lowerCaseEmail = email.toLowerCase();
     // Check if the user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: lowerCaseEmail });
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
@@ -70,7 +72,6 @@ exports.login = async (req, res) => {
     // Return user data along with the token
     res.status(200).json({ token, user });
   } catch (error) {
-    console.error("Error logging in:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -79,14 +80,14 @@ exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
+    const lowerCaseEmail = email.toLowerCase();
     // Check if the user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: lowerCaseEmail });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json({ message: "reset sent to email" });
   } catch (error) {
-    console.error("Error updating password:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -98,8 +99,9 @@ exports.newPasswords = async (req, res) => {
   // console.log(email);
   // console.log(newPassword);3
   try {
+    const lowerCaseEmail = email.toLowerCase();
     // Check if the user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: lowerCaseEmail });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -110,11 +112,10 @@ exports.newPasswords = async (req, res) => {
     // Update the user's password
     user.password = hashedPassword;
     await user.save();
-    console.log("password successfully changed");
+
     // Send a response
     res.status(200).json({ message: "password change successffully" });
   } catch (error) {
-    console.error("Error updating password:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -123,7 +124,7 @@ exports.newPasswords = async (req, res) => {
 // Update user information
 exports.updateUser = async (req, res) => {
   try {
-    const { userId } = req.params; // Assuming userId is passed as a parameter in the request
+    const { userId } = req.params;
     const { fullName, image } = req.body;
 
     // Find the user by userId
