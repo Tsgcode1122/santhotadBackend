@@ -57,7 +57,6 @@ exports.formSubmission = async (req, res) => {
       message: "Inquiry sent successfully",
     });
   } catch (error) {
-    console.error("Error sending inquiry email:", error);
     res.status(500).json({
       success: false,
       message: "Failed to send inquiry email",
@@ -75,7 +74,6 @@ exports.sendVerificationCode = async (req, res) => {
     const token = jwt.sign({ verify }, process.env.JWT_SECRET);
 
     // Log the generated token
-    console.log("Generated JWT token:", token);
 
     // Send the verification code token to the user's email
     await transporter.sendMail({
@@ -85,9 +83,6 @@ exports.sendVerificationCode = async (req, res) => {
       text: `Your verification code is: ${verify}`,
       html: `Your verification code is: <strong>${verify}</strong>`,
     });
-
-    console.log("Verification code sent to:", email);
-    console.log("Generated verification code:", verify);
 
     res.status(200).json({
       success: true,
@@ -110,9 +105,6 @@ exports.verifyCode = async (req, res) => {
     // Decode the JWT to extract the verification code
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const verification = decoded.verify;
-
-    console.log("Code sent from frontend:", verificationCode);
-    console.log("Decoded verification code:", verification);
 
     // Compare the provided code with the verification code
     const success = verificationCode === verification;

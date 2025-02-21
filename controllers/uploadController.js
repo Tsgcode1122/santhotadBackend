@@ -30,8 +30,6 @@ const uploadImage = async (req, res) => {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    console.log("Uploaded file:", req.file);
-
     const userId = req.body.userId;
 
     if (!userId) {
@@ -51,8 +49,6 @@ const uploadImage = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    console.log("Updated User:", user);
-
     res.json({ imageUrl: uploadedImageUrl, user });
   } catch (error) {
     console.error("Error uploading image:", error);
@@ -64,8 +60,6 @@ const uploadCoverImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
-
-    console.log("Uploaded file:", req.file);
 
     const uploadedImageUrl = req.file.path;
 

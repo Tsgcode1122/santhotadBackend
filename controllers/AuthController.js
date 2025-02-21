@@ -93,11 +93,7 @@ exports.forgotPassword = async (req, res) => {
 };
 exports.newPasswords = async (req, res) => {
   const { email, newPassword } = req.body;
-  console.log("email gotten:", email);
-  console.log("newpassword inputed:", newPassword);
 
-  // console.log(email);
-  // console.log(newPassword);3
   try {
     const lowerCaseEmail = email.toLowerCase();
     // Check if the user exists

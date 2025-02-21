@@ -28,9 +28,6 @@ exports.sendVerificationCode = async (req, res) => {
     // Create a JWT containing the verification code
     const token = jwt.sign({ verify }, process.env.JWT_SECRET);
 
-    // Log the generated token
-    console.log("Generated JWT token:", token);
-
     // Send the verification code token to the user's email
     await transporter.sendMail({
       from: process.env.MAIL_SENDER,
@@ -39,9 +36,6 @@ exports.sendVerificationCode = async (req, res) => {
       text: `Your reset password  is: ${verify}`,
       html: `hello you requested to change your password, input this code in your reset: <strong>${verify}</strong>`,
     });
-
-    console.log("Verification code sent to:", email);
-    console.log("Generated verification code:", verify);
 
     res.status(200).json({
       success: true,
@@ -65,17 +59,12 @@ exports.verifyCode = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const verification = decoded.verify;
 
-    console.log("Code sent from frontend:", verificationCode);
-    console.log("Decoded verification code:", verification);
-
     // Compare the provided code with the verification code
     const success = verificationCode === verification;
 
     if (success) {
-      console.log("Verification successful");
       res.json({ success: true });
     } else {
-      console.log("Verification failed");
       res.json({ success: false });
     }
   } catch (error) {
